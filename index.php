@@ -1,29 +1,43 @@
 <?php
-    if(!isset($_POST['submit'])) {
-        $message = 'please enter valid zippyshare url';
-    }else {
-        $url = $_POST['zippy-url'];
+    // if(!isset($_POST['submit'])) {
+    //     $message = 'please enter valid zippyshare url';
+    // }else {
+    //     $url = $_POST['zippy-url'];
 
 
-        preg_match_all( "#http:\/\/www(.*?).zippyshare.com\/v\/([a-zA-Z0-9]*)\/file.html#", $url, $matches, PREG_SET_ORDER );
+    //     preg_match_all('/https?:\/\/www([0-9]+)\.zippyshare\.com\/v\/([0-9a-zA-Z]+)\/file.html/', $url, $matches, PREG_SET_ORDER);
+    //     //preg_match_all( "#http:\/\/www(.*?).zippyshare.com\/v\/([a-zA-Z0-9]*)\/file.html#", $url, $matches, PREG_SET_ORDER );
 
-        var_dump($matches);
+    //     var_dump($matches);
 
-        $www = $matches[1];
-        $file = $matches[2];
+    //     $www = $matches[1];
+    //     $file = $matches[2];
 
-        print_r($file);
+    //     print_r($file);
 
 
 
-        function get_title($url){
-            $str = file_get_contents($url);
-            if(strlen($str)>0){
-                $str = trim(preg_replace('/\s+/', ' ', $str)); // supports line breaks inside <title>
-                preg_match("/\<title\>(.*)\<\/title\>/i",$str,$title); // ignore case
-                return $title[1];
-            }
-        }
+    //     function get_title($url){
+    //         $str = file_get_contents($url);
+    //         if(strlen($str)>0){
+    //             $str = trim(preg_replace('/\s+/', ' ', $str)); // supports line breaks inside <title>
+    //             preg_match("/\<title\>(.*)\<\/title\>/i",$str,$title); // ignore case
+    //             return $title[1];
+    //         }
+    //     }
+    // }
+    // 
+    
+    require 'ZippyshareFile.php';
+    
+    if (isset($_POST['zippy-url'])) {
+        $file = new ZippyshareFile($_POST['zippy-url']);
+
+        echo $file->getWWW();
+        echo ' ';
+        echo $file->getFile();
+        echo ' ';
+        echo $file->downloadTitle();
     }
 ?>
 
