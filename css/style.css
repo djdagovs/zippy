@@ -97,3 +97,19 @@ input[type=submit]:hover {
     -o-transition: all 200ms ease-in-out;
     transition: all 200ms ease-in-out;
 }
+
+.mp3 {
+    margin: 10px 0;
+}
+
+.mp3 h1 {
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.mp3 iframe {
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+}

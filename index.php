@@ -1,25 +1,14 @@
 <?php
-    if(!isset($_POST['submit'])) {
-        $message = 'please enter valid zippyshare url';
-    }else {
-        $url = $_POST['zippy-url'];
-
-
-        preg_match_all( "#http:\/\/www(.*?).zippyshare.com\/v\/([a-zA-Z0-9]*)\/file.html#", $url, $matches, PREG_SET_ORDER );
-        $www = $matches[1];
-        $file = $matches[2];
-
-        print_r($file);
-
-        function get_title($url){
-            $str = file_get_contents($url);
-            if(strlen($str)>0){
-                $str = trim(preg_replace('/\s+/', ' ', $str)); // supports line breaks inside <title>
-                preg_match("/\<title\>(.*)\<\/title\>/i",$str,$title); // ignore case
-                return $title[1];
-            }
+    require 'ZippyshareFile.php';
+    include 'core/connection.php';
+    function get_title($url){
+        $str = file_get_contents($url);
+        if(strlen($str)>0){
+            $str = trim(preg_replace('/\s+/', ' ', $str)); // supports line breaks inside <title>
+            preg_match("/\<title\>(.*)\<\/title\>/i",$str,$title); // ignore case
+            return $title[1];
         }
-    }
+    } 
 ?>
 
 <!DOCTYPE html>
@@ -38,25 +27,41 @@
     </div>
 
     <div class="box">
-        <p>Check ZippyShare URL</p>
+        
 
-        <form action="index.php" method="post">
-            <input type="text" name="zippy-url" >
-            <input type="submit" name="submit" value="Check URL">
+        <?php
+            $query = "SELECT * FROM music ORDER BY ID DESC";
+            $result = mysqli_query($conn, $query);
 
-        <?php 
-            if(isset($url)) {
-                $title = str_replace("Zippyshare.com - ","",get_title($url));
-                $title = str_replace("4clubbers.mp3","",$title);
-                $title = str_replace(".mp3","",$title);
-                $title = str_replace("[www.4clubbers.com.pl]","",$title);
-                echo "<p name='song-title'>" . $title . "</p>";
+            if (mysqli_num_rows($result) > 0) {
+                while ($x = mysqli_fetch_assoc($result)) {
+                    $id = $x['ID'];
+                    $title = $x['title'];
+                    $www = $x['www'];
+                    $file = $x['file'];
+                    $user = $x['added_by']; ?>
+
+                    <div class="mp3">
+                        <h1>#<?php echo $id; ?> <?php echo $title; ?></h1>
+                        <script type="text/javascript">
+                            var zippywww="<?php echo $www; ?>";
+                            var zippyfile="<?php echo $file; ?>";
+                            var zippytext="#00B9A5";
+                            var zippyback="#00B9A5";
+                            var zippyplay="#00B9A5";
+                            var zippywidth=600;
+                            var zippyauto=false;
+                            var zippyvol=80;
+                            var zippywave = "#00B9A5";
+                            var zippyborder = "#00B9A5";
+                        </script>
+                        <script type="text/javascript" src="http://api.zippyshare.com/api/embed_new.js"></script>
+                    </div>
+                <?php }
+            }
         ?>
 
-                <input type="submit" name="addMP3" value="Add MP3">
 
-           <?php } ?>
-        </form>
     </div>
 </body>
 </html>
