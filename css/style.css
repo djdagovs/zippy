@@ -48,15 +48,14 @@ table {
 
 .header {
     height: 40px;
-    width: 100%;
     background: #00B9A5;
-    position: fixed;
+    display: fixed;
 }
 
 .box {
-    padding-top: 50px;
     width: 1020px;
     margin: 0 auto;
+    height: 1000px;
 }
 
 p {

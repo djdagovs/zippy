@@ -6,15 +6,10 @@
 
 
         preg_match_all( "#http:\/\/www(.*?).zippyshare.com\/v\/([a-zA-Z0-9]*)\/file.html#", $url, $matches, PREG_SET_ORDER );
-
-        var_dump($matches);
-
         $www = $matches[1];
         $file = $matches[2];
 
         print_r($file);
-
-
 
         function get_title($url){
             $str = file_get_contents($url);
@@ -48,7 +43,6 @@
         <form action="index.php" method="post">
             <input type="text" name="zippy-url" >
             <input type="submit" name="submit" value="Check URL">
-        </form>
 
         <?php 
             if(isset($url)) {
@@ -56,15 +50,13 @@
                 $title = str_replace("4clubbers.mp3","",$title);
                 $title = str_replace(".mp3","",$title);
                 $title = str_replace("[www.4clubbers.com.pl]","",$title);
-                echo "<p>" . $title . "</p>";
-                
-               
-                ?>
+                echo "<p name='song-title'>" . $title . "</p>";
+        ?>
 
                 <input type="submit" name="addMP3" value="Add MP3">
 
            <?php } ?>
-        
+        </form>
     </div>
 </body>
 </html>
